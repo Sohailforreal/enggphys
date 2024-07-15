@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style type="text/css" media="all">
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+p {
+  margin-top: 10px;
+}
+  </style>
+</head>
+<body>
+  <h1>Numerical Aperture</h1>
+
+
+  <label for="u1">Refractive index of Core:</label>
+  <input type="number" id="u1" min="0"> 
+  <label for="u2">Refractive index of Cladding:</label>
+  <input type="number" id="u2" min="0">
+  <button onclick="calculateNuAper()">Calculate</button>
+  <p id="nu-result"></p>
+  
+  
+  <h1>V-Number</h1>
+
+  <label for="frequency">Frequency (Hz):</label>
+  <input type="number" id="frequency" min="0">
+  <label for="diameter">Diameter</label>
+  <input type="number" id="diameter" min="0">
+  
+  <label for="nuApr">Numerical Aperture</label>
+  <input type="number" id="nuApr" min="0"> 
+  <label for="radius">Radius </label>
+  <input type="number" id="radius" min="0" > 
+  <button onclick="calculateVNumber()">Calculate</button>
+  <p id="v-result"></p>
+  
+  
+  
+  
+  <h1>Number of Modes</h1>
+  <p>(Step index)<p>
+
+  <label for="vn">V number</label>
+  <input type="number" id="vn" min="0">
+  
+  <button onclick="calculateNmodes()">Calculate</button>
+  <p id="n-result"></p>
+  
+  
+  
+   <h1>Number of Modes</h1>
+  <p>(Graded index)<p>
+
+  <label for="vn1">V number</label>
+  <input type="number" id="vn1" min="0">
+  
+  <button onclick="calculateNmodesg()">Calculate</button>
+  <p id="g-result"></p>
+  
+  
+  
+     <h1>Acceptance Angle</h1>
+
+
+  <label for="nA">Numerical Aperture</label>
+  <input type="number" placeholder="" id="nA" min="0">
+  
+  <button onclick="calculateAngle()">Calculate</button>
+  <p id="a-result"></p>
+
+
+
+  
+  <h1>Critical Angle</h1>
+
+
+  <label for="rCo">RI of Core</label>
+  <input type="number" placeholder="" id="rCo" min="0">
+  
+    <label for="rCl">RI of Cladding</label>
+  <input type="number" placeholder="" id="rCl" min="0">
+  
+  <button onclick="calculateCAngle()">Calculate</button>
+  <p id="c-result"></p>
+
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  <script>
+    
+    function calculateNuAper() { 
+  var u1 = parseFloat(document.getElementById("u1").value);
+  var u2 = parseFloat(document.getElementById("u2").value);
+
+  var diff = u1*u1-u2*u2;
+  var nuAper = Math.sqrt(diff);
+  document.getElementById("nu-result").innerHTML = "Numerical Aperture:" + nuAper.toFixed(2);
+}
+
+function calculateVNumber() {
+  var frequency = parseFloat(document.getElementById("frequency").value);
+  var diameter = parseFloat(document.getElementById("diameter").value);
+  var nuApr = parseFloat(document.getElementById("nuApr").value);
+  var radius = parseFloat(document.getElementById("radius").value);
+
+  
+  var vNumber;
+  
+ // var vNumber = (Math.PI*diameter/frequency)*nuApr;
+  
+ if (radius) {
+   vNumber=(2*Math.PI*radius/frequency)*nuApr;
+   document.getElementById("v-result").innerHTML = "V-Number (Cutoff Parameter): " + vNumber.toFixed(2);
+ } 
+ 
+   
+   else{
+     vNumber = (Math.PI*diameter/frequency)*nuApr;
+     document.getElementById("v-result").innerHTML = "V-Number (Cutoff Parameter): " + vNumber.toFixed(2);
+     }
+  
+  
+  
+  //document.getElementById("v-result").innerHTML = "V-Number (Cutoff Parameter): " + vNumber.toFixed(2);
+}
+
+
+function calculateNmodes() {
+  var vn = parseFloat(document.getElementById("vn").value);
+var nm = (vn*vn)/2;
+
+  document.getElementById("n-result").innerHTML = "No. of Modes: " + nm.toFixed(2);
+}
+
+
+
+function calculateNmodesg() {
+  var vn1 = parseFloat(document.getElementById("vn1").value);
+var nm1 = (vn1*vn1)/4;
+
+  document.getElementById("g-result").innerHTML = "No. of Modes: " + nm1.toFixed(2);
+}
+
+
+
+function calculateAngle() {
+  var nA= parseFloat(document.getElementById("nA").value);
+
+var angle = Math.asin(nA);
+
+var angleInDegree= (angle*180)/Math.PI;
+  document.getElementById("a-result").innerHTML = "Acceptance Angle: " + angleInDegree.toFixed(2);
+}
+
+
+
+
+function calculateCAngle() {
+  var rCo = parseFloat(document.getElementById("rCo").value);
+
+  var rCl = parseFloat(document.getElementById("rCl").value); 
+  var ag= rCl/rCo;
+var critAngle = Math.asin(ag);
+var cAngleInDegree= (critAngle*180)/Math.PI;
+
+  document.getElementById("c-result").innerHTML = "Critical Angle: " + cAngleInDegree.toFixed(2);
+}
+  </script>
+</body>
+</html>
